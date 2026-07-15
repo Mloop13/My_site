@@ -1,10 +1,13 @@
-const projects = [
+"use client";
+
+import { useLanguage } from "./i18n/context";
+import { homeDict } from "./i18n/home";
+import { LanguageToggle } from "./components/LanguageToggle";
+
+const projectsMeta = [
   {
     index: "01",
     code: "KVT / ADMISSION",
-    title: "Рейтинг-листы приёмной кампании",
-    description:
-      "Помог Колледжу высоких технологий при БГТУ им. В. Г. Шухова собрать рейтинг-листы из выгрузки примерно на 1200 заявлений: разнос данных, сохранение ручных правок и обработка нестандартных статусов.",
     meta: "PROCESS LOGIC · DATA · GOOGLE SHEETS",
     status: "CASE IN PREPARATION",
     className: "project--wide",
@@ -12,9 +15,6 @@ const projects = [
   {
     index: "02",
     code: "MEDCENTER / 2026",
-    title: "Онлайн-запись в медицинский центр",
-    description:
-      "Дипломное веб-приложение: специалисты и процедуры, запись на приём, личный кабинет, история визитов и связанная бизнес-логика.",
     meta: "WEB APP · DATABASE · UX",
     status: "COMPLETED",
     href: "http://155.212.224.183",
@@ -22,9 +22,6 @@ const projects = [
   {
     index: "03",
     code: "M207 / 2026",
-    title: "Сайт компании медицинского ПО",
-    description:
-      "Сайт-визитка с каталогом продуктов: сбор материалов, постановка задачи, визуальная система под фирменный стиль и итерации с заказчиком.",
     meta: "WEBSITE · ART DIRECTION · DELIVERY",
     status: "LIVE",
     href: "https://mloop13.github.io/m207soft/",
@@ -32,39 +29,20 @@ const projects = [
   {
     index: "04",
     code: "AGENT LAB / R&D",
-    title: "Личная агентная инфраструктура",
-    description:
-      "Ежедневные сводки, Telegram-доставка, источники данных и база знаний. Полигон для изучения AI-агентов на собственных процессах.",
     meta: "AI AGENTS · TELEGRAM · KNOWLEDGE",
     status: "IN PROGRESS",
   },
 ];
 
-const capabilities = [
-  {
-    number: "01",
-    title: "Разобрать",
-    text: "Перевожу размытый запрос в понятные требования, сценарии и границы результата.",
-  },
-  {
-    number: "02",
-    title: "Собрать",
-    text: "Использую AI как производственный инструмент для сайтов, ботов и автоматизаций.",
-  },
-  {
-    number: "03",
-    title: "Проверить",
-    text: "Ищу неоднозначности и краевые случаи до того, как они превратятся в проблемы.",
-  },
-  {
-    number: "04",
-    title: "Довести",
-    text: "Показываю рабочий результат, собираю обратную связь и провожу через итерации.",
-  },
-];
+const capabilityNumbers = ["01", "02", "03", "04"];
 
 export default function Home() {
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+  const { lang } = useLanguage();
+  const t = homeDict[lang];
+
+  const projects = projectsMeta.map((meta, i) => ({ ...meta, ...t.projects[i] }));
+  const capabilities = capabilityNumbers.map((number, i) => ({ number, ...t.capabilities[i] }));
 
   return (
     <main>
@@ -73,13 +51,17 @@ export default function Home() {
           ITHAKA<span className="brand-slash">/</span>
         </a>
         <nav aria-label="Основная навигация">
-          <a href="#projects">Проекты</a>
-          <a href="#method">Метод</a>
-          <a href="#about">Обо мне</a>
+          <a href="#projects">{t.nav.projects}</a>
+          <a href="#method">{t.nav.method}</a>
+          <a href="#about">{t.nav.about}</a>
+          <a href={`${basePath}/play/`}>PLAY</a>
         </nav>
-        <a className="header-cta" href="https://github.com/Mloop13" target="_blank" rel="noreferrer">
-          GitHub <span>↗</span>
-        </a>
+        <div className="header-actions">
+          <LanguageToggle />
+          <a className="header-cta" href="https://github.com/Mloop13" target="_blank" rel="noreferrer">
+            GitHub <span>↗</span>
+          </a>
+        </div>
       </header>
 
       <section className="hero" id="top">
@@ -95,27 +77,29 @@ export default function Home() {
         <div className="hero-copy">
           <div className="eyebrow">IT × HAKA / THE WAY TO A WORKING SYSTEM</div>
           <h1>
-            <span>Из хаоса —</span>
-            <span>в работающую</span>
-            <span>систему</span>
+            {t.hero.lines.map((line) => (
+              <span key={line}>{line}</span>
+            ))}
           </h1>
-          <p>
-            Проектирую и собираю сайты, автоматизации и AI-инструменты. Разбираю задачу,
-            нахожу неоднозначности и довожу идею до рабочего результата.
-          </p>
+          <p>{t.hero.paragraph}</p>
           <div className="hero-actions">
             <a className="button button-primary" href="#projects">
-              Смотреть проекты <span>↓</span>
+              {t.hero.ctaPrimary} <span>↓</span>
             </a>
             <a className="text-link" href="https://telegram.me/Wand33rlust" target="_blank" rel="noreferrer">
-              Обсудить задачу <span>↗</span>
+              {t.hero.ctaSecondary} <span>↗</span>
             </a>
           </div>
         </div>
 
         <div className="hero-art" aria-hidden="true">
           <div className="hero-chevron">›</div>
-          <img src={`${basePath}/ithaka-hero.webp`} alt="" />
+          <img
+            src={`${basePath}/ithaka-hero.webp`}
+            alt=""
+            draggable={false}
+            onContextMenu={(e) => e.preventDefault()}
+          />
           <div className="scan-square">
             <span>SCULPT.EXE</span>
             <span>RENDER PASS_07</span>
@@ -156,11 +140,10 @@ export default function Home() {
             <span className="section-index">/ 01</span>
             <p className="eyebrow">SELECTED WORK / PROOF OF PROCESS</p>
           </div>
-          <h2>Работающие<br />артефакты</h2>
-          <p className="section-intro">
-            Здесь не коллекция технологий, а задачи, которые удалось превратить в результат.
-            Новые кейсы по B2B-лидогенерации будут появляться по мере запуска.
-          </p>
+          <h2>
+            {t.projectsSection.heading[0]}<br />{t.projectsSection.heading[1]}
+          </h2>
+          <p className="section-intro">{t.projectsSection.intro}</p>
         </div>
 
         <div className="project-grid">
@@ -209,7 +192,9 @@ export default function Home() {
         <div className="method-title">
           <span className="section-index">/ 02</span>
           <p className="eyebrow">OPERATING PRINCIPLES</p>
-          <h2>Не магия.<br />Метод.</h2>
+          <h2>
+            {t.method.heading[0]}<br />{t.method.heading[1]}
+          </h2>
           <div className="method-note">
             <span>AI ASSISTED</span>
             <span>HUMAN DIRECTED</span>
@@ -238,17 +223,9 @@ export default function Home() {
         <div className="about-copy">
           <span className="section-index">/ 03</span>
           <p className="eyebrow">SERGEY TIMOSHENKO / BUILDER IN PROGRESS</p>
-          <h2>ITHAKA — это путь, а не маска.</h2>
-          <p className="about-lead">
-            Я выпускник Колледжа высоких технологий по направлению «Информационные системы
-            и программирование». Изучаю AI-агентов, автоматизацию и разработку через реальные
-            задачи — от сайтов до процессов с данными.
-          </p>
-          <p>
-            Моя сильная сторона — не притворяться всезнающим разработчиком, а быстро разбираться
-            в задаче, удерживать её логику и собирать решение с современными инструментами. Сейчас
-            углубляю фундамент разработки и превращаю практику в воспроизводимую экспертизу.
-          </p>
+          <h2>{t.about.heading}</h2>
+          <p className="about-lead">{t.about.lead}</p>
+          <p>{t.about.paragraph}</p>
           <div className="about-links">
             <a href="https://github.com/Mloop13" target="_blank" rel="noreferrer">GitHub ↗</a>
             <a href="https://telegram.me/Wand33rlust" target="_blank" rel="noreferrer">Telegram ↗</a>
@@ -261,9 +238,11 @@ export default function Home() {
           <span className="status-line"><span className="status-dot" /> OPEN CHANNEL</span>
           <span>BUILD 01 / 2026</span>
         </div>
-        <h2>Есть хаос,<br />который пора<br />собрать?</h2>
+        <h2>
+          {t.contact.heading[0]}<br />{t.contact.heading[1]}<br />{t.contact.heading[2]}
+        </h2>
         <a className="contact-action" href="https://telegram.me/Wand33rlust" target="_blank" rel="noreferrer">
-          <span>Написать в Telegram</span>
+          <span>{t.contact.action}</span>
           <strong>↗</strong>
         </a>
       </section>

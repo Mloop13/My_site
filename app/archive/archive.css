@@ -30,6 +30,10 @@
 .archive-head-status { justify-self: end; color: var(--a-mint); display: flex; align-items: center; gap: 12px; }
 .archive-pulse { width: 7px; height: 7px; background: var(--a-mint); border-radius: 50%; box-shadow: 0 0 12px var(--a-mint); animation: archivePulse 2.4s infinite; }
 .archive-mode { border-left: 1px solid var(--a-line); padding-left: 16px; color: var(--a-text); }
+.archive-lang-toggle { border-color: var(--a-line); color: var(--a-muted); font-size: 9px; padding: 6px 10px; }
+.archive-lang-toggle:hover { border-color: var(--a-mint); color: var(--a-text); }
+.archive-lang-toggle .lang-toggle-active { color: var(--a-mint); }
+.archive-lang-toggle .lang-toggle-sep { color: var(--a-line); }
 
 .archive-hero {
   min-height: 820px; height: calc(100svh - 64px); max-height: 920px; padding: 32px 3vw 36px;
@@ -51,7 +55,7 @@
 
 .archive-portrait { min-width: 0; height: 100%; position: relative; border: 1px solid var(--a-line); overflow: hidden; background: rgba(2,14,14,.9); }
 .archive-portrait::before { content: ""; position: absolute; inset: 14px; border: 1px solid rgba(51,230,122,.16); z-index: 2; pointer-events: none; }
-.archive-portrait img { width: 100%; height: 100%; object-fit: cover; object-position: center; filter: contrast(1.08) saturate(.8); }
+.archive-portrait img { width: 100%; height: 100%; object-fit: cover; object-position: center; filter: contrast(1.08) saturate(.8); -webkit-user-drag: none; user-select: none; }
 .archive-corners { position: absolute; inset: 0; z-index: 4; background: linear-gradient(var(--a-mint),var(--a-mint)) left top/28px 1px no-repeat,linear-gradient(var(--a-mint),var(--a-mint)) left top/1px 28px no-repeat,linear-gradient(var(--a-mint),var(--a-mint)) right top/28px 1px no-repeat,linear-gradient(var(--a-mint),var(--a-mint)) right top/1px 28px no-repeat,linear-gradient(var(--a-mint),var(--a-mint)) left bottom/28px 1px no-repeat,linear-gradient(var(--a-mint),var(--a-mint)) left bottom/1px 28px no-repeat,linear-gradient(var(--a-mint),var(--a-mint)) right bottom/28px 1px no-repeat,linear-gradient(var(--a-mint),var(--a-mint)) right bottom/1px 28px no-repeat; }
 .archive-scale { position: absolute; left: 5px; top: 8%; bottom: 8%; z-index: 3; display: flex; flex-direction: column; justify-content: space-between; color: var(--a-muted); font-size: 8px; }
 .archive-scale::after { content: ""; position: absolute; left: 17px; top: 0; bottom: 0; border-left: 1px dashed var(--a-line); }

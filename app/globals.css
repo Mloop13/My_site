@@ -74,14 +74,31 @@ button, a { -webkit-tap-highlight-color: transparent; }
   transition: right .18s ease;
 }
 .site-header nav a:hover::after { right: 0; }
+.header-actions { justify-self: end; display: flex; align-items: center; gap: 16px; }
 .header-cta {
-  justify-self: end;
   border: 1px solid var(--mint);
   padding: 12px 18px;
   font-size: 11px;
   transition: .2s ease;
 }
 .header-cta:hover { background: var(--mint); color: var(--ink); }
+.lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--line);
+  padding: 8px 12px;
+  background: transparent;
+  color: var(--muted);
+  font: 11px var(--font-geist-mono), monospace;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  cursor: pointer;
+  transition: .2s ease;
+}
+.lang-toggle:hover { border-color: var(--mint); color: var(--paper); }
+.lang-toggle-active { color: var(--mint); }
+.lang-toggle-sep { color: var(--line); }
 
 .hero {
   min-height: calc(100svh - 76px);
@@ -175,6 +192,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
   top: 5.5vh;
   width: min(59vw, 850px);
   height: 93%;
+  background: var(--ink);
   animation: slideIn .9s .08s ease both;
 }
 .hero-art img {
@@ -184,6 +202,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
   filter: contrast(1.08) saturate(.86);
   position: relative;
   z-index: 2;
+  -webkit-user-drag: none;
+  user-select: none;
 }
 .hero-chevron {
   position: absolute;
