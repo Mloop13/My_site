@@ -58,7 +58,7 @@ export default function ArchivePage() {
         </nav>
         <div className="archive-head-status">
           <span className="archive-pulse" /> SYSTEM ONLINE
-          <a href="/" className="archive-mode">MODE_03 ↗</a>
+          <a href={`${basePath}/`} className="archive-mode">MODE_03 ↗</a>
         </div>
       </header>
 
