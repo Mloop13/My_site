@@ -175,7 +175,7 @@ export function Deck({ children, hint = "листай" }: { children: ReactNode;
             ))}
           </nav>
           <div className="deck-progress" aria-hidden="true">
-            <strong>{pad(index + 1)}</strong> / {pad(count)}
+            <strong>{index === 0 ? "—" : pad(index)}</strong> / {pad(count - 1)}
           </div>
           <div className={`deck-hint${index === 0 ? "" : " is-hidden"}`} aria-hidden="true">
             {hint} <span>→</span>

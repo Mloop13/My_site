@@ -6,6 +6,7 @@ import { homeDict } from "./i18n/home";
 import { LanguageToggle } from "./components/LanguageToggle";
 import { Deck } from "./components/Deck";
 import { ChaosSystem } from "./components/ChaosSystem";
+import { GlitchText } from "./components/GlitchText";
 
 const projectsMeta = [
   {
@@ -201,8 +202,11 @@ export default function Home() {
         <section className="deck-panel method section" id="method">
           <div className="method-title">
             <div className="method-head">
-              <h2 className="glitch-h">
-                {t.method.heading[0]}<br /><span className="h-accent">{t.method.heading[1]}</span>
+              <h2>
+                <GlitchText
+                  mode="swap"
+                  lines={[{ text: t.method.heading[0] }, { text: t.method.heading[1], accent: true }]}
+                />
               </h2>
               <div className="method-kicker">
                 <span className="section-index">/ 02</span>
@@ -252,7 +256,7 @@ export default function Home() {
               <span className="section-index">/ 03</span>
               <p className="eyebrow">SERGEY TIMOSHENKO / BUILDER IN PROGRESS</p>
             </div>
-            <h2 className="glitch-h">{t.about.heading}</h2>
+            <h2><GlitchText mode="scramble" lines={[{ text: t.about.heading }]} /></h2>
             <p className="about-lead">{t.about.lead}</p>
             <p>{t.about.paragraph}</p>
             <div className="about-links">
@@ -269,7 +273,7 @@ export default function Home() {
               <span className="status-line"><span className="status-dot" /> OPEN CHANNEL</span>
               <span>BUILD 01 / 2026</span>
             </div>
-            <h2 className="glitch-h">
+            <h2 className="glitch-chroma">
               {t.contact.heading[0]}<br />{t.contact.heading[1]}<br /><span className="h-accent">{t.contact.heading[2]}</span>
             </h2>
             <a className="contact-action" href="https://telegram.me/Wand33rlust" target="_blank" rel="noreferrer">

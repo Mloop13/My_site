@@ -107,7 +107,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  background: var(--ink);
+  background: #000;
   border-bottom: 1px solid var(--line);
 }
 .hero::before {
@@ -193,7 +193,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
   top: 5.5vh;
   width: min(59vw, 850px);
   height: 93%;
-  background: var(--ink);
+  background: #000;
   animation: slideIn .9s .08s ease both;
 }
 .hero-art img {
@@ -202,9 +202,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
   object-position: center bottom;
   position: relative;
   z-index: 2;
-  /* фон картинки — чистый #000; screen поднимает его ровно до подложки (--ink),
-     поэтому чёрный прямоугольник портрета бесшовно сливается со страницей */
-  mix-blend-mode: screen;
+  /* фон картинки — чистый #000, подложка тоже #000 → портрет бесшовно, без тонировки */
   -webkit-user-drag: none;
   user-select: none;
 }
@@ -423,7 +421,7 @@ footer p:last-child { justify-self: end; }
 @keyframes slideIn { from{opacity:0;transform:translateX(28px)} to{opacity:1;transform:none} }
 @keyframes scan { from{top:-3px} to{top:calc(100% + 3px)} }
 @keyframes ticker { to{transform:translateX(-50%)} }
-@keyframes noteGlow { 0%, 100% { color: var(--muted); } 50% { color: var(--mint); } }
+@keyframes noteGlow { 0% { color: var(--muted); } 16.66% { color: var(--mint); } 33.33%, 100% { color: var(--muted); } }
 
 /* Двухтонный акцент + glitch заголовков */
 .h-accent { color: var(--mint); }
@@ -432,8 +430,8 @@ footer p:last-child { justify-self: end; }
   position: absolute; inset: 0;
   pointer-events: none;
 }
-.hero-word::before { color: var(--mint); animation: glitchTop 5.5s steps(1) infinite; }
-.hero-word::after { color: var(--paper); animation: glitchBot 5.5s steps(1) infinite; }
+.hero-word::before { color: var(--mint); animation: glitchTop 4s steps(1) infinite; }
+.hero-word::after { color: var(--paper); animation: glitchBot 4s steps(1) infinite; }
 @keyframes glitchTop {
   0%, 90%, 100% { opacity: 0; transform: translate(0); clip-path: inset(0 0 100% 0); }
   91% { opacity: .55; transform: translate(-4px,-2px); clip-path: inset(4% 0 60% 0); }
@@ -456,6 +454,17 @@ footer p:last-child { justify-self: end; }
   72% { transform: translate(2px,1px); }
   100% { transform: none; clip-path: none; }
 }
+/* контакт — хроматический сдвиг (RGB-разъезд), работает на многострочном заголовке */
+.glitch-chroma:hover { animation: chroma .5s ease 1; }
+@keyframes chroma {
+  0%, 100% { text-shadow: none; }
+  20% { text-shadow: -3px 0 rgba(1,222,130,.9), 3px 0 rgba(241,240,234,.65); }
+  40% { text-shadow: 3px 0 rgba(1,222,130,.9), -3px 0 rgba(241,240,234,.65); }
+  60% { text-shadow: -2px 1px 0 rgba(1,222,130,.8), 2px 0 rgba(241,240,234,.55); }
+  80% { text-shadow: 2px 0 rgba(1,222,130,.8), -2px 0 rgba(241,240,234,.55); }
+}
+/* строки-строки внутри JS-glitch заголовков (scramble / swap) */
+.glitch-line { display: block; }
 
 @media (max-width: 1050px) {
   .hero { height: 820px; }
@@ -572,6 +581,7 @@ body.deck-on .site-header { position: fixed; top: 0; left: 0; right: 0; z-index:
 
 .deck.is-enabled .method { align-content: center; align-items: start; }
 .deck.is-enabled .method h2 { font-size: clamp(40px, 6vw, 100px); margin-left: -0.03em; }
+.deck.is-enabled .method-head { width: min-content; }
 .deck.is-enabled .capability { padding: clamp(14px, 2.4vh, 26px) 12px; }
 .deck.is-enabled .capability-list { min-height: min(52vh, 400px); }
 
