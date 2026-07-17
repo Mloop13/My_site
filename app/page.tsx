@@ -1,9 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import { useLanguage } from "./i18n/context";
 import { homeDict } from "./i18n/home";
 import { LanguageToggle } from "./components/LanguageToggle";
 import { Deck } from "./components/Deck";
+import { ChaosSystem } from "./components/ChaosSystem";
 
 const projectsMeta = [
   {
@@ -42,6 +44,9 @@ export default function Home() {
   const { lang } = useLanguage();
   const t = homeDict[lang];
 
+  const [openCap, setOpenCap] = useState<number | null>(0);
+  const toggleCap = (i: number) => setOpenCap((prev) => (prev === i ? null : i));
+
   const projects = projectsMeta.map((meta, i) => ({ ...meta, ...t.projects[i] }));
   const capabilities = capabilityNumbers.map((number, i) => ({ number, ...t.capabilities[i] }));
 
@@ -65,7 +70,7 @@ export default function Home() {
         </div>
       </header>
 
-      <Deck>
+      <Deck hint={lang === "ru" ? "листай" : "scroll"}>
         {/* Панель 0 — Hero + ticker */}
         <div className="deck-panel hero-panel">
           <section className="hero" id="top">
@@ -74,15 +79,17 @@ export default function Home() {
               <span className="status-detail">PORTFOLIO / BUILD 01</span>
             </div>
 
-            <div className="hero-word" aria-label="ITHAKA">
+            <div className="hero-word" aria-label="ITHAKA" data-text="ITHAKA">
               ITHAKA
             </div>
 
             <div className="hero-copy">
               <div className="eyebrow">IT × HAKA / THE WAY TO A WORKING SYSTEM</div>
-              <h1>
-                {t.hero.lines.map((line) => (
-                  <span key={line}>{line}</span>
+              <h1 className="glitch-h">
+                {t.hero.lines.map((line, i) => (
+                  <span key={line} className={i === t.hero.lines.length - 1 ? "h-accent" : undefined}>
+                    {line}
+                  </span>
                 ))}
               </h1>
               <p>{t.hero.paragraph}</p>
@@ -139,94 +146,113 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Панели 1–4 — Кейсы как под-слайды */}
-        {projects.map((project, i) => (
-          <section
-            key={project.index}
-            className={`deck-panel case-panel${project.className ? ` ${project.className}` : ""}`}
-            id={i === 0 ? "projects" : undefined}
-          >
-            <div className="case-inner">
-              <div className="case-head">
-                <div className="case-tag">
-                  <span className="section-index">/ 01 · SELECTED WORK</span>
-                  <p className="eyebrow">PROOF OF PROCESS</p>
-                </div>
-                <span className="case-count">
-                  <strong>{project.index}</strong> / 04
-                </span>
-              </div>
-
-              {i === 0 && <p className="case-chapter">{t.projectsSection.intro}</p>}
-
-              <div className="case-body">
-                <div className="case-visual" aria-hidden="true">
-                  <span className="project-orbit" />
-                  <span className="project-glyph">{project.index}</span>
-                  <span className="project-grid-lines" />
-                </div>
-                <div className="case-copy">
-                  <div className="case-code">{project.code}</div>
-                  <h2>{project.title}</h2>
-                  <p>{project.description}</p>
-                  <div className="case-meta">
+        {/* Панель 1 — Кейсы: сетка 2×2 */}
+        <section className="deck-panel cases-panel section" id="projects">
+          <div className="cases-head">
+            <div className="cases-tag">
+              <span className="section-index">/ 01 · SELECTED WORK</span>
+              <p className="eyebrow">PROOF OF PROCESS</p>
+            </div>
+            <p className="cases-intro">{t.projectsSection.intro}</p>
+            <span className="cases-count">
+              <strong>04</strong> / 04
+            </span>
+          </div>
+          <div className="cases-grid">
+            {projects.map((project) => {
+              const inner = (
+                <>
+                  <div className="case-card-top">
+                    <span className="case-card-index">{project.index}</span>
+                    <span className="case-card-code">{project.code}</span>
+                    <span className="case-card-arrow">{project.href ? "↗" : "·"}</span>
+                  </div>
+                  <div className="case-card-mid">
+                    <h3>{project.title}</h3>
+                    <p>{project.description}</p>
+                  </div>
+                  <div className="case-card-meta">
                     <span>{project.meta}</span>
                     <span>{project.status}</span>
                   </div>
-                  {project.href ? (
-                    <a
-                      className="button button-primary case-cta"
-                      href={project.href}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {lang === "ru" ? "Открыть проект" : "Open project"} <span>↗</span>
-                    </a>
-                  ) : null}
+                </>
+              );
+              return project.href ? (
+                <a
+                  key={project.index}
+                  className="case-card"
+                  data-glyph={project.index}
+                  href={project.href}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {inner}
+                </a>
+              ) : (
+                <div key={project.index} className="case-card" data-glyph={project.index}>
+                  {inner}
                 </div>
-              </div>
-            </div>
-          </section>
-        ))}
+              );
+            })}
+          </div>
+        </section>
 
         {/* Панель 5 — Метод */}
         <section className="deck-panel method section" id="method">
           <div className="method-title">
-            <span className="section-index">/ 02</span>
-            <p className="eyebrow">OPERATING PRINCIPLES</p>
-            <h2>
-              {t.method.heading[0]}<br />{t.method.heading[1]}
-            </h2>
+            <div className="method-head">
+              <h2 className="glitch-h">
+                {t.method.heading[0]}<br /><span className="h-accent">{t.method.heading[1]}</span>
+              </h2>
+              <div className="method-kicker">
+                <span className="section-index">/ 02</span>
+                <p className="eyebrow">OPERATING PRINCIPLES</p>
+              </div>
+            </div>
             <div className="method-note">
               <span>AI ASSISTED</span>
               <span>HUMAN DIRECTED</span>
               <span>RESULT VERIFIED</span>
             </div>
+            <div className="method-figure" aria-hidden="true">
+              <span className="method-count">04</span>
+              <span className="method-count-label">CORE STEPS</span>
+              <span className="method-bars"><i /><i /><i /><i /></span>
+            </div>
           </div>
-          <div className="capability-list">
-            {capabilities.map((item) => (
-              <article className="capability" key={item.number}>
-                <span>{item.number}</span>
-                <h3>{item.title}</h3>
-                <p>{item.text}</p>
-                <i>+</i>
-              </article>
-            ))}
+          <div className="method-right">
+            <div className="capability-list">
+            {capabilities.map((item, i) => {
+              const open = openCap === i;
+              return (
+                <article
+                  className={`capability${open ? " is-open" : ""}`}
+                  key={item.number}
+                  onClick={() => toggleCap(i)}
+                  aria-expanded={open}
+                >
+                  <span>{item.number}</span>
+                  <h3>{item.title}</h3>
+                  <p>{item.text}</p>
+                  <i aria-hidden="true">+</i>
+                </article>
+              );
+            })}
+            </div>
           </div>
         </section>
 
         {/* Панель 6 — Обо мне */}
         <section className="deck-panel about section" id="about">
-          <div className="about-art" aria-hidden="true">
-            <div className="about-code">
-              01001001<br />01010100<br />01001000<br />01000001<br />01001011<br />01000001
-            </div>
-            <div className="about-circle">Σ</div>
+          <div className="about-art">
+            <ChaosSystem />
           </div>
           <div className="about-copy">
-            <span className="section-index">/ 03</span>
-            <p className="eyebrow">SERGEY TIMOSHENKO / BUILDER IN PROGRESS</p>
-            <h2>{t.about.heading}</h2>
+            <div className="about-kicker">
+              <span className="section-index">/ 03</span>
+              <p className="eyebrow">SERGEY TIMOSHENKO / BUILDER IN PROGRESS</p>
+            </div>
+            <h2 className="glitch-h">{t.about.heading}</h2>
             <p className="about-lead">{t.about.lead}</p>
             <p>{t.about.paragraph}</p>
             <div className="about-links">
@@ -243,8 +269,8 @@ export default function Home() {
               <span className="status-line"><span className="status-dot" /> OPEN CHANNEL</span>
               <span>BUILD 01 / 2026</span>
             </div>
-            <h2>
-              {t.contact.heading[0]}<br />{t.contact.heading[1]}<br />{t.contact.heading[2]}
+            <h2 className="glitch-h">
+              {t.contact.heading[0]}<br />{t.contact.heading[1]}<br /><span className="h-accent">{t.contact.heading[2]}</span>
             </h2>
             <a className="contact-action" href="https://telegram.me/Wand33rlust" target="_blank" rel="noreferrer">
               <span>{t.contact.action}</span>

@@ -13,7 +13,7 @@ const pad = (n: number) => String(n).padStart(2, "0");
  * Листание колесом / клавишами / свайпом. На мобиле и при prefers-reduced-motion
  * дек выключается — панели становятся обычным вертикальным потоком (фолбэк).
  */
-export function Deck({ children }: { children: ReactNode }) {
+export function Deck({ children, hint = "листай" }: { children: ReactNode; hint?: string }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [index, setIndex] = useState(0);
   const [count, setCount] = useState(0);
@@ -178,7 +178,7 @@ export function Deck({ children }: { children: ReactNode }) {
             <strong>{pad(index + 1)}</strong> / {pad(count)}
           </div>
           <div className={`deck-hint${index === 0 ? "" : " is-hidden"}`} aria-hidden="true">
-            листай <span>→</span>
+            {hint} <span>→</span>
           </div>
         </>
       )}
