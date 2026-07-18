@@ -215,7 +215,10 @@ button, a { -webkit-tap-highlight-color: transparent; }
   z-index: 3;
   pointer-events: none;
 }
-.hero-variant-xray { animation: squareXray 12s linear infinite; }
+.hero-variant-xray {
+  background: #000;
+  animation: squareXray 12s linear infinite;
+}
 .hero-variant-statue { animation: squareStatue 12s linear infinite; }
 .hero-chevron {
   position: absolute;
@@ -246,9 +249,10 @@ button, a { -webkit-tap-highlight-color: transparent; }
 }
 .scan-square::before {
   content: ""; position: absolute; left: 0; right: 0; height: 2px;
-  top: -4px; background: rgba(255,255,255,.85);
+  top: 0; transform: translateY(-50%);
+  background: rgba(255,255,255,.95);
   box-shadow: 0 0 15px white;
-  animation: scan 12s linear infinite;
+  animation: scanLine 12s linear infinite;
 }
 .crosshair { position: absolute; left: 54%; top: 31%; z-index: 5; font: 24px var(--font-geist-mono); }
 .hero-side {
@@ -430,21 +434,63 @@ footer p:last-child { justify-self: end; }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
 @keyframes rise { from{opacity:0;transform:translateY(25px) scaleX(.84)} to{opacity:1;transform:translateY(0) scaleX(.84)} }
 @keyframes slideIn { from{opacity:0;transform:translateX(28px)} to{opacity:1;transform:none} }
-@keyframes scan {
-  0% { top: -3px; }
-  31%, 33% { top: calc(100% - 2px); }
-  64%, 66% { top: -3px; }
-  97%, 100% { top: calc(100% - 2px); }
+@keyframes scanLine {
+  0% { top: 0; }
+  33.333% { top: 100%; }
+  66.666% { top: 0; }
+  100% { top: 100%; }
 }
 @keyframes squareXray {
-  0% { clip-path: polygon(var(--scan-left) var(--scan-top), calc(var(--scan-left) + var(--scan-size)) var(--scan-top), calc(var(--scan-left) + var(--scan-size)) var(--scan-top), var(--scan-left) var(--scan-top)); }
-  31%, 64% { clip-path: polygon(var(--scan-left) var(--scan-top), calc(var(--scan-left) + var(--scan-size)) var(--scan-top), calc(var(--scan-left) + var(--scan-size)) calc(var(--scan-top) + var(--scan-size)), var(--scan-left) calc(var(--scan-top) + var(--scan-size))); }
-  66%, 100% { clip-path: polygon(var(--scan-left) var(--scan-top), calc(var(--scan-left) + var(--scan-size)) var(--scan-top), calc(var(--scan-left) + var(--scan-size)) var(--scan-top), var(--scan-left) var(--scan-top)); }
+  0% {
+    clip-path: inset(
+      var(--scan-top)
+      calc(100% - var(--scan-left) - var(--scan-size))
+      calc(100% - var(--scan-top))
+      var(--scan-left)
+    );
+  }
+  33.333%, 66.666% {
+    clip-path: inset(
+      var(--scan-top)
+      calc(100% - var(--scan-left) - var(--scan-size))
+      calc(100% - var(--scan-top) - var(--scan-size))
+      var(--scan-left)
+    );
+  }
+  100% {
+    clip-path: inset(
+      calc(var(--scan-top) + var(--scan-size))
+      calc(100% - var(--scan-left) - var(--scan-size))
+      calc(100% - var(--scan-top) - var(--scan-size))
+      var(--scan-left)
+    );
+  }
 }
 @keyframes squareStatue {
-  0%, 33% { clip-path: polygon(var(--scan-left) calc(var(--scan-top) + var(--scan-size)), calc(var(--scan-left) + var(--scan-size)) calc(var(--scan-top) + var(--scan-size)), calc(var(--scan-left) + var(--scan-size)) calc(var(--scan-top) + var(--scan-size)), var(--scan-left) calc(var(--scan-top) + var(--scan-size))); }
-  64%, 66% { clip-path: polygon(var(--scan-left) var(--scan-top), calc(var(--scan-left) + var(--scan-size)) var(--scan-top), calc(var(--scan-left) + var(--scan-size)) calc(var(--scan-top) + var(--scan-size)), var(--scan-left) calc(var(--scan-top) + var(--scan-size))); }
-  97%, 100% { clip-path: polygon(var(--scan-left) calc(var(--scan-top) + var(--scan-size)), calc(var(--scan-left) + var(--scan-size)) calc(var(--scan-top) + var(--scan-size)), calc(var(--scan-left) + var(--scan-size)) calc(var(--scan-top) + var(--scan-size)), var(--scan-left) calc(var(--scan-top) + var(--scan-size))); }
+  0%, 33.333% {
+    clip-path: inset(
+      calc(var(--scan-top) + var(--scan-size))
+      calc(100% - var(--scan-left) - var(--scan-size))
+      calc(100% - var(--scan-top) - var(--scan-size))
+      var(--scan-left)
+    );
+  }
+  66.666% {
+    clip-path: inset(
+      var(--scan-top)
+      calc(100% - var(--scan-left) - var(--scan-size))
+      calc(100% - var(--scan-top) - var(--scan-size))
+      var(--scan-left)
+    );
+  }
+  100% {
+    clip-path: inset(
+      calc(var(--scan-top) + var(--scan-size))
+      calc(100% - var(--scan-left) - var(--scan-size))
+      calc(100% - var(--scan-top) - var(--scan-size))
+      var(--scan-left)
+    );
+  }
 }
 @keyframes ticker { to{transform:translateX(-50%)} }
 @keyframes noteGlow { 0% { color: var(--muted); } 16.66% { color: var(--mint); } 33.33%, 100% { color: var(--muted); } }
