@@ -209,17 +209,6 @@ button, a { -webkit-tap-highlight-color: transparent; }
   -webkit-user-drag: none;
   user-select: none;
 }
-.hero-art .hero-variant {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
-}
-.hero-variant-xray {
-  background: #000;
-  animation: squareXray 12s linear infinite;
-}
-.hero-variant-statue { animation: squareStatue 12s linear infinite; }
 .hero-chevron {
   position: absolute;
   z-index: 1;
@@ -237,24 +226,34 @@ button, a { -webkit-tap-highlight-color: transparent; }
   width: var(--scan-size);
   aspect-ratio: 1;
   border: 1px solid var(--mint);
-  background: rgba(1, 222, 130, .72);
+  background: #000;
   left: var(--scan-left); top: var(--scan-top);
   color: var(--ink);
-  padding: 12px;
   font: 8px/1.45 var(--font-geist-mono), monospace;
-  display: flex; flex-direction: column;
-  justify-content: flex-end;
   box-shadow: 0 0 50px rgba(1,222,130,.12);
   overflow: hidden;
 }
-.scan-square::before {
-  content: ""; position: absolute; left: 0; right: 0; height: 2px;
-  top: 0; transform: translateY(-50%);
+.scan-canvas { position: absolute; inset: 0; z-index: 0; display: block; }
+.scan-tint { position: absolute; inset: 0; z-index: 1; background: rgba(1, 222, 130, .58); pointer-events: none; }
+.scan-line {
+  position: absolute; z-index: 3; left: 0; right: 0; top: 0; height: 2px;
   background: rgba(255,255,255,.95);
   box-shadow: 0 0 15px white;
-  animation: scanLine 12s linear infinite;
+  pointer-events: none;
+  will-change: transform;
 }
-.crosshair { position: absolute; left: 54%; top: 31%; z-index: 5; font: 24px var(--font-geist-mono); }
+.scan-crosshair {
+  position: absolute; z-index: 4; inset: 0;
+  display: grid; place-items: center;
+  color: var(--paper);
+  font: 24px var(--font-geist-mono), monospace;
+  pointer-events: none;
+}
+.scan-meta {
+  position: absolute; z-index: 4; left: 12px; bottom: 12px;
+  display: flex; flex-direction: column;
+  pointer-events: none;
+}
 .hero-side {
   position: absolute;
   z-index: 5;
@@ -434,64 +433,6 @@ footer p:last-child { justify-self: end; }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
 @keyframes rise { from{opacity:0;transform:translateY(25px) scaleX(.84)} to{opacity:1;transform:translateY(0) scaleX(.84)} }
 @keyframes slideIn { from{opacity:0;transform:translateX(28px)} to{opacity:1;transform:none} }
-@keyframes scanLine {
-  0% { top: 0; }
-  33.333% { top: 100%; }
-  66.666% { top: 0; }
-  100% { top: 100%; }
-}
-@keyframes squareXray {
-  0% {
-    clip-path: inset(
-      var(--scan-top)
-      calc(100% - var(--scan-left) - var(--scan-size))
-      calc(100% - var(--scan-top))
-      var(--scan-left)
-    );
-  }
-  33.333%, 66.666% {
-    clip-path: inset(
-      var(--scan-top)
-      calc(100% - var(--scan-left) - var(--scan-size))
-      calc(100% - var(--scan-top) - var(--scan-size))
-      var(--scan-left)
-    );
-  }
-  100% {
-    clip-path: inset(
-      calc(var(--scan-top) + var(--scan-size))
-      calc(100% - var(--scan-left) - var(--scan-size))
-      calc(100% - var(--scan-top) - var(--scan-size))
-      var(--scan-left)
-    );
-  }
-}
-@keyframes squareStatue {
-  0%, 33.333% {
-    clip-path: inset(
-      calc(var(--scan-top) + var(--scan-size))
-      calc(100% - var(--scan-left) - var(--scan-size))
-      calc(100% - var(--scan-top) - var(--scan-size))
-      var(--scan-left)
-    );
-  }
-  66.666% {
-    clip-path: inset(
-      var(--scan-top)
-      calc(100% - var(--scan-left) - var(--scan-size))
-      calc(100% - var(--scan-top) - var(--scan-size))
-      var(--scan-left)
-    );
-  }
-  100% {
-    clip-path: inset(
-      calc(var(--scan-top) + var(--scan-size))
-      calc(100% - var(--scan-left) - var(--scan-size))
-      calc(100% - var(--scan-top) - var(--scan-size))
-      var(--scan-left)
-    );
-  }
-}
 @keyframes ticker { to{transform:translateX(-50%)} }
 @keyframes noteGlow { 0% { color: var(--muted); } 16.66% { color: var(--mint); } 33.33%, 100% { color: var(--muted); } }
 
